@@ -99,6 +99,9 @@ public class DisciplinaController {
             throw new NotFoundException();
         }
         
+        disciplina.setNome(request.getNome());
+
         return DisciplinaResponseDto.from(disciplina);
     }
+
 }
