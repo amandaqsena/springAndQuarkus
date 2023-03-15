@@ -10,7 +10,7 @@ public class DisciplinaResponseDto {
     private int id;
     private String nome;
 
-    public static DisciplinaResponseDto from (Disciplina disciplina) {
+    public static DisciplinaResponseDto from(Disciplina disciplina) {
         return new DisciplinaResponseDto(disciplina.getId(), disciplina.getNome());
     }
 }

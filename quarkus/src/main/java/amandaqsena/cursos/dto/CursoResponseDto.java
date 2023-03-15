@@ -17,12 +17,12 @@ public class CursoResponseDto {
     private int duracao;
     private List<DisciplinaResponseDto> disciplinas;
 
-    public static CursoResponseDto from (Curso curso) {
+    public static CursoResponseDto from(Curso curso) {
         return new CursoResponseDto(
-            curso.getId(),
-            curso.getNome(),
-            curso.getDescrição(),
-            curso.getDuracao(),
-            curso.getDisciplinas().stream().map(DisciplinaResponseDto::from).collect(Collectors.toList()));
+                curso.getId(),
+                curso.getNome(),
+                curso.getDescrição(),
+                curso.getDuracao(),
+                curso.getDisciplinas().stream().map(DisciplinaResponseDto::from).collect(Collectors.toList()));
     }
 }

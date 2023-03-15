@@ -26,8 +26,8 @@ import lombok.Setter;
 @Setter
 @Entity
 @Builder
-@Table(name="cursos")
-public class Curso extends PanacheEntityBase{
+@Table(name = "cursos")
+public class Curso extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -38,7 +38,7 @@ public class Curso extends PanacheEntityBase{
     @Builder.Default
     private List<Disciplina> disciplinas = new ArrayList<>();
 
-    public static Curso fromCursoRequestDto(CursoRequestDto request){
+    public static Curso fromCursoRequestDto(CursoRequestDto request) {
         final CursoBuilder curso = new CursoBuilder();
         curso.descrição = request.getDescricao();
         curso.duracao = request.getDuracao();

@@ -20,8 +20,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="alunos")
-public class Aluno extends PanacheEntityBase{
+@Table(name = "alunos")
+public class Aluno extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

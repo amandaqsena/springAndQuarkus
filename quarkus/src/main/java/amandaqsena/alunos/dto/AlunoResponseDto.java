@@ -1,7 +1,12 @@
 package amandaqsena.alunos.dto;
 
 import amandaqsena.alunos.model.Aluno;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 
 @Data
 @Builder

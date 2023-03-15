@@ -9,8 +9,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
-import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -28,43 +28,42 @@ import amandaqsena.cursos.model.CursoRepository;
 public class CursosController {
     final private CursoRepository repositorio;
 
-    public CursosController(CursoRepository repositorio){
+    public CursosController(CursoRepository repositorio) {
         this.repositorio = repositorio;
     }
 
     @GET
     public List<CursoResponseDto> buscarCursos(@QueryParam("prefix") Optional<String> prefix) {
         return prefix
-            .map(s-> repositorio
-                .findComPrefixo(s)
-                .stream()
-                .map(CursoResponseDto::from)
-                .collect(Collectors.toList()))
-            .orElseGet(() -> Curso
-                .findAll()
-                .list()
-                .stream()
-                .map(it -> (Curso) it )
-                .map(CursoResponseDto::from)
-                .collect(Collectors.toList()));
+                .map(s -> repositorio
+                        .findComPrefixo(s)
+                        .stream()
+                        .map(CursoResponseDto::from)
+                        .collect(Collectors.toList()))
+                .orElseGet(() -> Curso
+                        .findAll()
+                        .list()
+                        .stream()
+                        .map(it -> (Curso) it)
+                        .map(CursoResponseDto::from)
+                        .collect(Collectors.toList()));
     }
 
     @GET
     @Path("/{id}")
     public CursoResponseDto encontrarCurso(@PathParam("id") final int id) {
         return CursoResponseDto.from((Curso) Curso
-            .findByIdOptional(id)
-            .orElseThrow(NotFoundException::new));
+                .findByIdOptional(id)
+                .orElseThrow(NotFoundException::new));
     }
 
     @POST
     @Transactional
     public CursoResponseDto criarCurso(
-        final CursoRequestDto request
-    ) {
-        final Curso curso = Curso.fromCursoRequestDto(request); 
+            final CursoRequestDto request) {
+        final Curso curso = Curso.fromCursoRequestDto(request);
         repositorio.persist(curso);
-        
+
         return CursoResponseDto.from(curso);
     }
 
@@ -73,25 +72,22 @@ public class CursosController {
     @Transactional
     public void apagarCurso(@PathParam("id") int id) {
         Curso.findByIdOptional(id)
-            .orElseThrow(NotFoundException::new).delete();
+                .orElseThrow(NotFoundException::new).delete();
     }
 
-    @PATCH
+    @Transactional
+    @PUT
     @Path("/{id}")
     public CursoResponseDto atualizarCurso(
-        @PathParam("id") int id,
-        final CursoRequestDto request
-    ){
-        Curso curso = Curso.findById(id);
-        if (curso == null) {
-            throw new NotFoundException();
-        }
-        
+            @PathParam("id") int id,
+            final CursoRequestDto request) {
+        Curso curso = (Curso) Curso.findByIdOptional(id).orElseThrow(NotFoundException::new);
+
         curso.setDuracao(request.getDuracao());
         curso.setDescrição(request.getDescricao());
-        curso.setNome(request.getNome());        
-
+        curso.setNome(request.getNome());
+        curso.persist();
         return CursoResponseDto.from(curso);
-        
+
     }
 }
