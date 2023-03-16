@@ -1,10 +1,9 @@
 package amandaqsena.cursos.dto;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import amandaqsena.cursos.model.Curso;
-import amandaqsena.disciplinas.dto.DisciplinaResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,14 +14,14 @@ public class CursoResponseDto {
     private String nome;
     private String descricao;
     private int duracao;
-    private List<DisciplinaResponseDto> disciplinas;
+    private Set<Integer> disciplinas;
 
     public static CursoResponseDto from(Curso curso) {
         return new CursoResponseDto(
                 curso.getId(),
                 curso.getNome(),
-                curso.getDescrição(),
+                curso.getDescricao(),
                 curso.getDuracao(),
-                curso.getDisciplinas().stream().map(DisciplinaResponseDto::from).collect(Collectors.toList()));
+                curso.getDisciplinas().stream().map(it-> it.getId()).collect(Collectors.toSet()));
     }
 }

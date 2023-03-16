@@ -17,7 +17,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import amandaqsena.cursos.model.Curso;
 import amandaqsena.disciplinas.dto.DisciplinaRequestDto;
 import amandaqsena.disciplinas.dto.DisciplinaResponseDto;
 import amandaqsena.disciplinas.model.Disciplina;
@@ -63,15 +62,8 @@ public class DisciplinaController {
     @POST
     @Transactional
     public DisciplinaResponseDto criarDisciplina(final DisciplinaRequestDto request) {
-        Curso curso = Curso.findById(request.getIdCurso());
-
-        if (curso == null) {
-            throw new NotFoundException();
-
-        }
 
         Disciplina disciplina = new Disciplina();
-        disciplina.setCurso(curso);
         disciplina.setNome(request.getNome());
 
         repositorio.persist(disciplina);

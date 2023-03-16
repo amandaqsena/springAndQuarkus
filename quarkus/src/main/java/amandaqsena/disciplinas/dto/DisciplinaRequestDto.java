@@ -11,5 +11,4 @@ import lombok.Setter;
 @NoArgsConstructor
 public class DisciplinaRequestDto {
     private String nome;
-    private Integer idCurso;
 }

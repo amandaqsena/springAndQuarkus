@@ -9,6 +9,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -16,11 +17,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import amandaqsena.alunos.dto.AlunoRequestDto;
 import amandaqsena.alunos.dto.AlunoResponseDto;
 import amandaqsena.alunos.model.Aluno;
 import amandaqsena.alunos.model.AlunoRepositorio;
+import amandaqsena.disciplinas.model.Disciplina;
 
 @Path("/alunos")
 @Produces(MediaType.APPLICATION_JSON)
@@ -86,5 +89,47 @@ public class AlunosController {
         aluno.setNome(request.getNome());
         aluno.persist();
         return AlunoResponseDto.from(aluno);
+    }
+
+    @Transactional
+    @PATCH
+    @Path("/{id}/adicionar")
+    public Response inscreveAlunoNaDisciplina(@PathParam("id") int id, @QueryParam("idDisciplina") int idDisciplina)  {
+        final Aluno aluno = (Aluno) Aluno
+                .findByIdOptional(id)
+                .orElseThrow(NotFoundException::new);
+        
+        final Disciplina disciplina = (Disciplina) Disciplina
+                .findByIdOptional(idDisciplina)
+                .orElseThrow(NotFoundException::new);
+        try {
+            aluno.matriculaNaDisciplina(disciplina);
+            disciplina.matriculaNaDisciplina(aluno);
+        } catch (Exception e) {
+           return Response.status(Response.Status.CONFLICT).entity("{\"msg\":\"Já matriculado\"}").build();
+        }
+        aluno.persist();
+        return Response.status(200).entity(AlunoResponseDto.from(aluno)).build();
+    }
+
+    @Transactional
+    @PATCH
+    @Path("/{id}/remover")
+    public Response removeDisciplinaDaGrade(@PathParam("id") int id, @QueryParam("idDisciplina") int idDisciplina)  {
+        final Aluno aluno = (Aluno) Aluno
+                .findByIdOptional(id)
+                .orElseThrow(NotFoundException::new);
+        
+        final Disciplina disciplina = (Disciplina) Disciplina
+                .findByIdOptional(idDisciplina)
+                .orElseThrow(NotFoundException::new);
+        try {
+            aluno.removeDisciplina(disciplina);
+            disciplina.removeDisciplina(aluno);
+        } catch (Exception e) {
+           return Response.status(Response.Status.CONFLICT).entity("{\"msg\":\"Não matriculado\"}").build();
+        }
+        aluno.persist();
+        return Response.status(200).entity(AlunoResponseDto.from(aluno)).build();
     }
 }

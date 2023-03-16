@@ -84,7 +84,7 @@ public class CursosController {
         Curso curso = (Curso) Curso.findByIdOptional(id).orElseThrow(NotFoundException::new);
 
         curso.setDuracao(request.getDuracao());
-        curso.setDescrição(request.getDescricao());
+        curso.setDescricao(request.getDescricao());
         curso.setNome(request.getNome());
         curso.persist();
         return CursoResponseDto.from(curso);

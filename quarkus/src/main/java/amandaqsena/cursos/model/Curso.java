@@ -32,7 +32,7 @@ public class Curso extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nome;
-    private String descrição;
+    private String descricao;
     private int duracao;
     @OneToMany(mappedBy = "curso", fetch = FetchType.EAGER)
     @Builder.Default
@@ -40,7 +40,7 @@ public class Curso extends PanacheEntityBase {
 
     public static Curso fromCursoRequestDto(CursoRequestDto request) {
         final CursoBuilder curso = new CursoBuilder();
-        curso.descrição = request.getDescricao();
+        curso.descricao = request.getDescricao();
         curso.duracao = request.getDuracao();
         curso.nome = request.getNome();
         return curso.build();
