@@ -1,5 +1,6 @@
 package amandaqsena.alunos.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -33,7 +34,7 @@ public class Aluno extends PanacheEntityBase {
     @ManyToOne
     private Curso curso;
     @ManyToMany
-    private Set<Disciplina> disciplinas;
+    private Set<Disciplina> disciplinas = new HashSet<>();
 
     public void matriculaNaDisciplina(Disciplina disciplina){
         if(!disciplinas.add(disciplina)){

@@ -1,7 +1,6 @@
 package amandaqsena.cursos.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import javax.persistence.Entity;
@@ -34,9 +33,8 @@ public class Curso extends PanacheEntityBase {
     private String nome;
     private String descricao;
     private int duracao;
-    @OneToMany(mappedBy = "curso", fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<Disciplina> disciplinas = new ArrayList<>();
+    @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY)
+    private Set<Disciplina> disciplinas;
 
     public static Curso fromCursoRequestDto(CursoRequestDto request) {
         final CursoBuilder curso = new CursoBuilder();
@@ -44,5 +42,17 @@ public class Curso extends PanacheEntityBase {
         curso.duracao = request.getDuracao();
         curso.nome = request.getNome();
         return curso.build();
+    }
+
+    public void removeDisciplina(Disciplina disciplina) {
+        if(!disciplinas.remove(disciplina)){
+            throw new IllegalArgumentException("Disciplina não fazia parte do curso");
+        }
+    }
+
+    public void incluiDisciplina(Disciplina disciplina) {
+        if(!disciplinas.add(disciplina)){
+            throw new IllegalArgumentException("Disciplina já fazia parte do curso");
+        }
     }
 }

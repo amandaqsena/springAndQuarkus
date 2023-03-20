@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +31,7 @@ public class Disciplina extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nome;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Curso curso;
     @ManyToMany
     private List<Professor> professores;
@@ -50,4 +49,6 @@ public class Disciplina extends PanacheEntityBase {
             throw new IllegalArgumentException("Aluno não estava matriculado na disciplina");
         }
     }
+
+    
 }
