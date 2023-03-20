@@ -25,7 +25,8 @@ import io.swagger.v3.oas.annotations.servers.Server;
     name = "JWT",
     type = HTTP,
     in = HEADER,
-    scheme = "jwt"
+    bearerFormat = "JWT",
+    scheme = "bearer"
 )
 public class SwaggerConfig {
 }

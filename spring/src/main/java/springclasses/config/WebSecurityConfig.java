@@ -19,7 +19,7 @@ public class WebSecurityConfig {
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
-        return new InMemoryUserDetailsManager(User.withDefaultPasswordEncoder()
+        return new InMemoryUserDetailsManager(User.builder()
             .username("UsuarioSeguro")
             .password("PasswordSegura")
             .roles("USER")
